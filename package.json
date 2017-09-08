@@ -1,0 +1,44 @@
+{
+  "name": "stock-pick",
+  "version": "1.0.0",
+  "description": "pick stocks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/eagleshine/stock-pick.git"
+  },
+  "keywords": [
+    "stock",
+    "nodejs",
+    "yahoo-finance"
+  ],
+  "author": "eagleshine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eagleshine/stock-pick/issues"
+  },
+  "homepage": "https://github.com/eagleshine/stock-pick#readme",
+  "dependencies": {
+    "chalk": "^2.1.0",
+    "cli-table": "^0.3.1",
+    "clui": "^0.3.6",
+    "commander": "^2.11.0",
+    "csvtojson": "^1.1.7",
+    "ember-paper": "^1.0.0-beta.3",
+    "express": "^4.15.4",
+    "figlet": "^1.2.0",
+    "inquirer": "^3.2.3",
+    "memory-cache": "^0.2.0",
+    "open": "0.0.5",
+    "preferences": "^0.2.1",
+    "shelljs": "^0.7.8",
+    "technicalindicators": "^1.0.20",
+    "yahoo-finance-data": "^3.2.0"
+  },
+  "devDependencies": {
+    "ember-cli-sass": "^7.0.0"
+  }
+}
