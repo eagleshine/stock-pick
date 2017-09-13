@@ -27,7 +27,6 @@
     "clui": "^0.3.6",
     "commander": "^2.11.0",
     "csvtojson": "^1.1.7",
-    "ember-paper": "^1.0.0-beta.3",
     "express": "^4.15.4",
     "figlet": "^1.2.0",
     "inquirer": "^3.2.3",
@@ -38,7 +37,5 @@
     "technicalindicators": "^1.0.20",
     "yahoo-finance-data": "^3.2.0"
   },
-  "devDependencies": {
-    "ember-cli-sass": "^7.0.0"
-  }
+  "devDependencies": {}
 }

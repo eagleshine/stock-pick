@@ -59,7 +59,11 @@ function cacheTickers() {
 }
 
 router.get('/', (req, res) => {
-  res.json({status: 'ok', version: '3.2.0'});
+  res.json({
+    status: 'ok',
+    version: 'v1',
+    apis: router.stack
+  });
 });
 
 /**
@@ -128,7 +132,12 @@ router.get('/chart/intraday/:ticker', (req, res) => {
 router.get('/chart/historical/:ticker', (req, res) => {
   api
     .getHistoricalData(req.params.ticker, req.query.interval, req.query.range)
-    .then(data => res.json(data))
+    .then(data => {
+      let result = {}
+      result.historicals = data.chart;
+      result.historicals.id = req.params.ticker;
+      res.json(result);
+    })
     .catch(err => res.json(err));
 });
 
@@ -139,7 +148,12 @@ router.get('/chart/historical/:ticker', (req, res) => {
 router.get('/ticker/info/:ticker', (req, res) => {
  api
    .quoteSummary(req.params.ticker)
-   .then(data => res.json(data))
+   .then(data => {
+     let result = {};
+     result.infos = data.quoteSummary;
+     result.infos.id = req.params.ticker;
+     res.json(result);
+   })
    .catch(err => res.json(err));
 });
 
@@ -259,14 +273,14 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/api/yahoo/v1', router);
+app.use('/api/v1', router);
 
 // HTML page at : http://localhost:3000/
 app.get('/', (req, res) => res.sendFile(__dirname + '/demo.html'));
 
 app.listen(3000, () => {
   console.log('Server started on http://localhost:3000/');
-  console.log('API available at http://localhost:3000/api');
+  console.log('API available at http://localhost:3000/api/v1');
 
   open('http://localhost:3000/');
 });
