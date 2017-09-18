@@ -30,6 +30,7 @@
     "express": "^4.15.4",
     "figlet": "^1.2.0",
     "inquirer": "^3.2.3",
+    "lodash": "^4.17.4",
     "memory-cache": "^0.2.0",
     "open": "0.0.5",
     "preferences": "^0.2.1",

@@ -4,6 +4,7 @@ const open = require('open');
 const apiDetails = require('./api_key');
 const cache = require('memory-cache');
 const csv = require('csvtojson');
+const _ = require('lodash')
 
 const app = express();
 const api = new YahooFinanceAPI(apiDetails);
@@ -121,7 +122,12 @@ router.get('/ticker/search/:searchterm', (req, res) => {
 router.get('/chart/intraday/:ticker', (req, res) => {
   api
     .getIntradayChartData(req.params.ticker, req.query.interval, req.query.prePost)
-    .then(data => res.json(data))
+    .then(data => {
+      let result = {}
+      result.intradays = data.chart;
+      result.intradays.id = req.params.ticker;
+      res.json(result);
+    })
     .catch(err => res.json(err));
 });
 
@@ -244,9 +250,22 @@ router.get('/sectors', (req, res) => {
   });
 });
 
+function filter_tickers(tickers, sector, start, end) {
+  let result = tickers;
+  if (sector) {
+    result = _.filter(tickers, function(value) {return value.Sector === sector});
+  }
+  return {
+    tickers: result.slice(start, end),
+    meta: {
+      total: result.length
+    }
+  };
+}
+
 router.get('/tickers', (req, res) => {
-  const startIdx = +req.query['start'] || 0;
   const size = +req.query['size'] || 25;
+  const startIdx = ((+req.query['page'] || 1) - 1) * size;
   const sector = req.query['sector'] || null;
   console.log('start: ' + startIdx + '; size: ' + size + '; sector: ' + sector);
 
@@ -254,14 +273,10 @@ router.get('/tickers', (req, res) => {
   var tickerArray = [];
   if (!tickers) {
     cacheTickers().then((values) => {
-      res.json({
-        tickers: values.slice(startIdx, startIdx + size)
-      });
+      res.json(send_tickers(values, sector, startIdx, startIdx + size));
     });
   } else {
-    res.json({
-      tickers: tickers.slice(startIdx, startIdx + size)
-    });
+    res.json(filter_tickers(tickers, sector, startIdx, startIdx + size));
   }
 });
 
@@ -282,5 +297,5 @@ app.listen(3000, () => {
   console.log('Server started on http://localhost:3000/');
   console.log('API available at http://localhost:3000/api/v1');
 
-  open('http://localhost:3000/');
+//  open('http://localhost:3000/');
 });
